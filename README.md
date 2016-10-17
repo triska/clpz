@@ -1,27 +1,53 @@
 # CLP(Z) &mdash; Constraint Logic Programming over Integers
 
-This repository contains information about **CLP(Z)** for SICStus
-Prolog.
+This repository contains information about **CLP(Z)**.
+
+CLP(Z) requires **SICStus Prolog**.
 
 The latest version of `library(clpz)` is available from:
 [**metalevel.at/clpz.pl**](http://www.metalevel.at/clpz.pl)
 
+The present implementation builds upon a decade of experience with a
+precursor library which I developed for a different Prolog system.
+CLP(Z) is the *more recent* and conceptually *more advanced*
+implementation. To keep track of recent developments, use&nbsp;CLP(Z).
+
+Current developments:
+
+  - increase [**logical purity**](https://www.metalevel.at/prolog/purity.html) of the implementation
+  - work on *stronger propagation*
+  - *correct* all reported issues.
+
 CLP(Z) is being developed for inclusion in
-[GUPU](http://www.complang.tuwien.ac.at/ulrich/gupu/).
+[**GUPU**](http://www.complang.tuwien.ac.at/ulrich/gupu/).
+
+An introduction to declarative integer arithmetic is available from
+[**metalevel.at/prolog/clpfd.html**](https://www.metalevel.at/prolog/clpfd.html)
 
 ## Using CLP(Z) constraints
 
 CLP(Z) is an instance of the general CLP(.) scheme, extending logic
 programming with reasoning over specialised domains.
 
-In the case of CLP(Z), the domain is the set of **integers**.
+In the case of CLP(Z), the domain is the set of **integers**. CLP(Z)
+is a generalisation of CLP(FD), which already ships with
+SICStus&nbsp;Prolog.
 
 CLP(Z) constraints like `(#=)/2`, `(#\=)/2`, and `(#<)/2` are meant
 to be used as pure alternatives for lower-level arithmetic primitives
 over integers. Importantly, they can be used in *all directions*.
 
-For example, we can use CLP(Z) constraints to obtain a version of
-`n_factorial/2` that can be used as a true relation:
+For example, consider a rather typical definition of `n_factorial/2`:
+
+    n_factorial(0, 1).
+    n_factorial(N, F) :-
+            N #> 0,
+            N1 #= N - 1,
+            n_factorial(N1, F1),
+            F #= N * F1.
+
+CLP(Z) constraints allow us to quite *freely exchange* the order
+of&nbsp;goals, obtaining for example:
 
     n_factorial(0, 1).
     n_factorial(N, F) :-
@@ -52,6 +78,9 @@ and also in the most general case:
     N = F, F = 2 ;
     N = 3,
     F = 6 .
+
+The advantage of using `(#=)/2` to express *arithmetic equality* is
+clear: It is a more general alternative for lower-level predicates.
 
 ## An impure alternative: Low-level integer arithmetic
 
