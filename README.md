@@ -12,9 +12,9 @@ precursor library which I developed for a different Prolog system.
 CLP(Z) is the *more recent* and conceptually *more advanced*
 implementation. To keep track of recent developments, use&nbsp;CLP(Z).
 
-Current developments:
+**Current developments**:
 
-  - increase [**logical purity**](https://www.metalevel.at/prolog/purity.html) of the implementation
+  - increase [**logical purity**](https://www.metalevel.at/prolog/purity) of the implementation
   - work on *stronger propagation*
   - *correct* all reported issues.
 
@@ -22,7 +22,9 @@ CLP(Z) is being developed for inclusion in
 [**GUPU**](http://www.complang.tuwien.ac.at/ulrich/gupu/).
 
 An introduction to declarative integer arithmetic is available from
-[**metalevel.at/prolog/clpfd.html**](https://www.metalevel.at/prolog/clpfd.html)
+[**metalevel.at/prolog/clpfd**](https://www.metalevel.at/prolog/clpfd)
+
+For more information about pure Prolog, read [**The Power of Prolog**](https://www.metalevel.at/prolog).
 
 ## Using CLP(Z) constraints
 
