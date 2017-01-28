@@ -17,6 +17,7 @@ implementation. To keep track of recent developments, use&nbsp;CLP(Z).
   - increase [**logical purity**](https://www.metalevel.at/prolog/purity) of the implementation
   - work on *stronger propagation*
   - *correct* all reported issues.
+  - *add* new constraints.
 
 CLP(Z) is being developed for inclusion in
 [**GUPU**](http://www.complang.tuwien.ac.at/ulrich/gupu/).
