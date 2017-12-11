@@ -6817,8 +6817,8 @@ cumulative(Tasks, Options) :-
             maplist(fd_inf, Starts, MinStarts),
             maplist(arg(3), Tasks, Ends),
             maplist(fd_sup, Ends, MaxEnds),
-            min_list(MinStarts, Start),
-            max_list(MaxEnds, End),
+            min_member(Start, MinStarts),
+            max_member(End, MaxEnds),
             resource_limit(Start, End, Tasks, Bss, L)
         ).
 

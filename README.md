@@ -29,7 +29,7 @@ For more information about pure Prolog, read [**The Power of Prolog**](https://w
 
 ## Using CLP(Z) constraints
 
-CLP(Z) is an instance of the general CLP(.) scheme, extending logic
+CLP(Z) is an instance of the general CLP(*X*) scheme, extending logic
 programming with reasoning over specialised domains.
 
 In the case of CLP(Z), the domain is the set of **integers**. CLP(Z)
@@ -85,6 +85,141 @@ and also in the most general case:
 The advantage of using `(#=)/2` to express *arithmetic equality* is
 clear: It is a more general alternative for lower-level predicates.
 
+In addition to providing declarative integer arithmetic,
+CLP(Z)&nbsp;constraints are also often used to solve
+[**combinatorial&nbsp;tasks*](https://www.metalevel.at/prolog/optimization)
+with&nbsp;Prolog.
+
+## Example programs
+
+This repository contains several example programs. The main predicates
+are all completely pure and can be used as true relations. This means
+that you can use the *same* program to:
+
+* *find* a single solution
+* *enumerate* all solutions
+* *complete* partially instantiated solutions
+* *validate* fully instantiated solutions.
+
+To get an idea of the power, usefulness and scope of CLP(Z)
+constraints, I recommend you work through the examples in the
+following order:
+
+1. [**n_factorial.pl**](n_factorial.pl): Shows how to use CLP(Z)
+   constraints for **declarative integer arithmetic**, obtaining very
+   general programs that can be used in all directions. Declarative
+   integer arithmetic is the simplest and most common use of CLP(Z)
+   constraints. They are easy to understand and use this way, and
+   often increase generality and logical purity of your code.
+
+2. [**sendmory.pl**](sendmory.pl): A simple cryptoarithmetic puzzle.
+   The task is to assign one of the digits 0,...,9 to each of the
+   letters S,E,N,D,M,O,R and Y in such a way that the following
+   calculation is valid, and no leading zeroes appear:
+
+            S E N D
+          + M O R E
+          ---------
+        = M O N E Y
+
+   This example illustrates several very important concepts:
+
+   * It is the first example that shows **residual constraints** for the
+     most general query. They are equivalent to the original query.
+
+   * It is good practice to separate the **core relation** from
+     `labeling/2`, so that termination and determinism can be observed
+     without an expensive search for concrete solutions.
+
+   * You can use this example to illustrate that the CLP(Z) system is able
+     to **propagate** many things that can also be found with human
+     reasoning. For example, due to the nature of the above calculation and
+     the prohibition of leading zeroes, `M` is necessarily 1.
+
+3. [**sudoku.pl**](sudoku.pl): Uses CLP(Z) constraints to model and
+   solve a simple and well-known puzzle. This example is well suited
+   for understanding the impact of different **propagation
+   strengths**: Use it to compare `all_different/1` `all_distinct/1`
+   on different puzzles:
+
+   ![](figures/filler.png) ![Sudoku with all_different/1](figures/sudoku_all_different.png) ![](figures/filler20.png) ![Sudoku with all_distinct/1](figures/sudoku_all_distinct.png)
+
+   The small dots in each cell indicate how many elements are pruned
+   by different **consistency techniques**. In many Sudoku puzzles,
+   using `all_distinct/1` makes labeling unnecessary. Does this mean that
+   we can forget `all_different/1` entirely?
+
+4. [**magic_square.pl**](magic_square.pl): CLP(Z) formulation of [*magic
+   squares*](http://mathworld.wolfram.com/MagicSquare.html). This is a good
+   example to learn about **symmetry breaking** constraints: Consider how
+   you can eliminate solutions that are rotations, reflections etc. of
+   other solutions, by imposing suitable further constraints. For example,
+   the following two solutions are essentially identical, since one can be
+   obtained from the other by reflecting elements along the main diagonal:
+
+   ![](figures/filler.png) ![Magic square solution](figures/magic_square1.png) ![](figures/filler20.png) ![Magic square transposed](figures/magic_square2.png)
+
+   Can you impose additional constraints so that you get only a single
+   solution in such cases, without losing any solutions that do not
+   belong to the same equivalence class? How many solutions are there
+   for N=4 that are unique up to isomorphism?
+
+5. [**magic_hexagon.pl**](magic_hexagon.pl): Uses CLP(Z) to describe a
+   [*magic hexagon*](http://mathworld.wolfram.com/MagicHexagon.html) of
+   order 3. The task is to place the integers 1,...,19 in the following
+   grid so that the sum of all numbers in a straight line (there are lines
+   of length 3, 4 and 5) is equal to 38. One solution of this task is shown
+   in the right picture:
+
+   ![](figures/filler.png) ![Magic hexagon grid](figures/magic_hexagon.png) ![](figures/filler20.png) ![Magic hexagon solution](figures/magic_hexagon_solution.png)
+
+   This is an example of a task that looks very simple at first, yet
+   is almost impossibly hard to solve manually. It is easy to solve
+   with CLP(Z) constraints though. Use the constraint solver to show
+   that the solution of this task is unique up to isomorphism.
+
+6. [**n_queens.pl**](n_queens.pl): Model the so-called [*N-queens
+   puzzle*](https://en.wikipedia.org/wiki/Eight_queens_puzzle) with
+   CLP(Z) constraints. This example is a good candidate to experiment
+   with different **search strategies**, specified as options of
+   `labeling/2`. For example, using the labeling strategy `ff`, you
+   can easliy find solutions for 100 queens and more. Sample solutions
+   for 8 and 50 queens:
+
+   ![](figures/filler.png) ![Solution for 8 queens](figures/queens8_solution.png) ![](figures/filler20.png) ![Solution for 50 queens](figures/queens50_solution.png)
+
+   Try to find solutions for larger N. Reorder the variables so that
+   `ff` breaks ties by selecting more central variables first.
+
+7. [**knight_tour.pl**](knight_tour.pl): Closed Knight's Tour using
+   CLP(Z) constraints. This is an example of using a more complex
+   **global constraint** called `circuit/1`. It shows how a problem
+   can be transformed so that it can be expressed with a global
+   constraint. Sample solutions, using an 8x8 and a 16x16 board:
+
+   ![](figures/filler.png) ![Closed knight's tour on an 8x8 board](figures/knight8_solution.png) ![](figures/filler20.png) ![Closed knight's tour on a 16x16 board](figures/knight16_solution.png)
+
+   Decide whether `circuit/1` can also be used to model tours that are
+   not necessarily closed. If not, why not? If possible, do it.
+
+8. [**tasks.pl**](tasks.pl): A task scheduling example, using the
+   `cumulative/2` global constraint. The `min/1` labeling option is
+   used to minimize the total duration.
+
+   ![](figures/filler.png) ![Task scheduling](figures/tasks.png)
+
+## Animations
+
+When studying Prolog and CLP(Z) constraints, it is often very useful
+to show *animations* of search processes. An instructional example:
+
+[**N-queens animation**](https://www.metalevel.at/queens/): This
+visualizes the search process for the N-queens example.
+
+You can use similar PostScript instructions to create [custom
+animations](https://www.metalevel.at/postscript/animations) for
+other examples.
+
 ## An impure alternative: Low-level integer arithmetic
 
 Suppose for a moment that CLP(Z) constraints were not available in
@@ -103,11 +238,9 @@ constraints by lower-level arithmetic predicates and obtain:
 
 Unfortunately, this does not work at all, because lower-level
 arithmetic predicates are *moded*: This means that their arguments
-must be sufficiently instantiated at the time they are invoked. In
-fact, SWI-Prolog does not even compile the above code but yields an
-error at compilation time. Therefore, we must reorder the goals
-and&nbsp;&mdash; somewhat annoyingly&nbsp;&mdash; change this for
-example to:
+must be sufficiently instantiated at the time they are invoked.
+Therefore, we must reorder the goals and&nbsp;&mdash; somewhat
+annoyingly&nbsp;&mdash; change this for example to:
 
     n_factorial(0, 1).
     n_factorial(N, F) :-
