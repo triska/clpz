@@ -87,7 +87,7 @@ clear: It is a more general alternative for lower-level predicates.
 
 In addition to providing declarative integer arithmetic,
 CLP(Z)&nbsp;constraints are also often used to solve
-[**combinatorial&nbsp;tasks*](https://www.metalevel.at/prolog/optimization)
+[**combinatorial&nbsp;tasks**](https://www.metalevel.at/prolog/optimization)
 with&nbsp;Prolog.
 
 ## Example programs
