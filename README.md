@@ -149,6 +149,8 @@ following order:
    using `all_distinct/1` makes labeling unnecessary. Does this mean that
    we can forget `all_different/1` entirely?
 
+   **Video**: https://www.metalevel.at/prolog/videos/sudoku
+
 4. [**magic_square.pl**](magic_square.pl): CLP(Z) formulation of [*magic
    squares*](http://mathworld.wolfram.com/MagicSquare.html). This is a good
    example to learn about **symmetry breaking** constraints: Consider how
@@ -191,7 +193,7 @@ following order:
    Try to find solutions for larger N. Reorder the variables so that
    `ff` breaks ties by selecting more central variables first.
 
-   Video: **https://www.metalevel.at/prolog/videos/n_queens**
+   **Video**: https://www.metalevel.at/prolog/videos/n_queens
 
 7. [**knight_tour.pl**](knight_tour.pl): Closed Knight's Tour using
    CLP(Z) constraints. This is an example of using a more complex
