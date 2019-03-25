@@ -23,7 +23,7 @@ CLP(Z) is being developed for inclusion in
 [**GUPU**](http://www.complang.tuwien.ac.at/ulrich/gupu/).
 
 An introduction to declarative integer arithmetic is available from
-[**metalevel.at/prolog/clpfd**](https://www.metalevel.at/prolog/clpfd)
+[**metalevel.at/prolog/clpz**](https://www.metalevel.at/prolog/clpz)
 
 For more information about pure Prolog, read [**The Power of Prolog**](https://www.metalevel.at/prolog).
 
@@ -190,6 +190,8 @@ following order:
 
    Try to find solutions for larger N. Reorder the variables so that
    `ff` breaks ties by selecting more central variables first.
+
+   Video: **https://www.metalevel.at/prolog/videos/n_queens**
 
 7. [**knight_tour.pl**](knight_tour.pl): Closed Knight's Tour using
    CLP(Z) constraints. This is an example of using a more complex
