@@ -25,6 +25,8 @@ CLP(ℤ) is being developed for inclusion in
 An introduction to declarative integer arithmetic is available from
 [**metalevel.at/prolog/clpz**](https://www.metalevel.at/prolog/clpz)
 
+**Video**: https://www.metalevel.at/prolog/videos/integers ![CLP(ℤ) video](figures/t_integers.png)
+
 For more information about pure Prolog, read [**The Power of Prolog**](https://www.metalevel.at/prolog).
 
 ## Using CLP(ℤ) constraints
