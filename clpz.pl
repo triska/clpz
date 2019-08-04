@@ -3,8 +3,8 @@
 
     Author:        Markus Triska
     E-mail:        triska@metalevel.at
-    WWW:           www.metalevel.at
-    Copyright (C): 2016, 2017 Markus Triska
+    WWW:           https://www.metalevel.at
+    Copyright (C): 2016, 2017, 2019 Markus Triska
 
     This library provides CLP(Z):
 
@@ -4986,7 +4986,22 @@ run_propagator(pmod(X,Y,Z), MState) -->
                 )
             )
         ;   X == Y -> kill(MState), Z = 0
-        ;   true % TODO: propagate more
+        ;   { fd_get(X, XD, XPs),
+              fd_get(Y, YD, _),
+              fd_get(Z, ZD, ZPs) },
+            (   { domain_infimum(XD, n(XMin)), XMin >= 0,
+                  domain_infimum(YD, n(YMin)), YMin > 0 } ->
+                { domain_remove_smaller_than(ZD, 0, ZD1) }
+            ;   ZD1 = ZD
+            ),
+            (   { domain_supremum(YD, n(YMax)), YMax > 0 } ->
+                { Max is YMax - 1, Min is -Max,
+                  domain_remove_smaller_than(ZD1, Min, ZD2),
+                  domain_remove_greater_than(ZD2, Max, ZD3) }
+            ;   ZD3 = ZD1
+            ),
+            fd_put(Z, ZD3, ZPs)
+            % TODO: propagate more            
         ).
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
