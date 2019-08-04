@@ -1,16 +1,16 @@
-# CLP(Z) &mdash; Constraint Logic Programming over Integers
+# CLP(ℤ) &mdash; Constraint Logic Programming over Integers
 
-This repository contains information about **CLP(Z)**.
+This repository contains information about **CLP(ℤ)**.
 
-CLP(Z) requires **SICStus Prolog**.
+CLP(ℤ) requires **SICStus Prolog**.
 
 The latest version of `library(clpz)` is available from:
 [**metalevel.at/clpz.pl**](http://www.metalevel.at/clpz.pl)
 
 The present implementation builds upon a decade of experience with a
 precursor library which I developed for a different Prolog system.
-CLP(Z) is the *more recent* and conceptually *more advanced*
-implementation. To keep track of recent developments, use&nbsp;CLP(Z).
+CLP(ℤ) is the *more recent* and conceptually *more advanced*
+implementation. To keep track of recent developments, use&nbsp;CLP(ℤ).
 
 **Current developments**:
 
@@ -19,7 +19,7 @@ implementation. To keep track of recent developments, use&nbsp;CLP(Z).
   - *correct* all reported issues.
   - *add* new constraints.
 
-CLP(Z) is being developed for inclusion in
+CLP(ℤ) is being developed for inclusion in
 [**GUPU**](http://www.complang.tuwien.ac.at/ulrich/gupu/).
 
 An introduction to declarative integer arithmetic is available from
@@ -27,16 +27,16 @@ An introduction to declarative integer arithmetic is available from
 
 For more information about pure Prolog, read [**The Power of Prolog**](https://www.metalevel.at/prolog).
 
-## Using CLP(Z) constraints
+## Using CLP(ℤ) constraints
 
-CLP(Z) is an instance of the general CLP(*X*) scheme, extending logic
+CLP(ℤ) is an instance of the general CLP(*X*) scheme, extending logic
 programming with reasoning over specialised domains.
 
-In the case of CLP(Z), the domain is the set of **integers**. CLP(Z)
+In the case of CLP(ℤ), the domain is the set of **integers**. CLP(ℤ)
 is a generalisation of CLP(FD), which already ships with
 SICStus&nbsp;Prolog.
 
-CLP(Z) constraints like `(#=)/2`, `(#\=)/2`, and `(#<)/2` are meant
+CLP(ℤ) constraints like `(#=)/2`, `(#\=)/2`, and `(#<)/2` are meant
 to be used as pure alternatives for lower-level arithmetic primitives
 over integers. Importantly, they can be used in *all directions*.
 
@@ -49,7 +49,7 @@ For example, consider a rather typical definition of `n_factorial/2`:
             n_factorial(N1, F1),
             F #= N * F1.
 
-CLP(Z) constraints allow us to quite *freely exchange* the order
+CLP(ℤ) constraints allow us to quite *freely exchange* the order
 of&nbsp;goals, obtaining for example:
 
     n_factorial(0, 1).
@@ -86,7 +86,7 @@ The advantage of using `(#=)/2` to express *arithmetic equality* is
 clear: It is a more general alternative for lower-level predicates.
 
 In addition to providing declarative integer arithmetic,
-CLP(Z)&nbsp;constraints are also often used to solve
+CLP(ℤ)&nbsp;constraints are also often used to solve
 [**combinatorial&nbsp;tasks**](https://www.metalevel.at/prolog/optimization)
 with&nbsp;Prolog.
 
@@ -101,14 +101,14 @@ that you can use the *same* program to:
 * *complete* partially instantiated solutions
 * *validate* fully instantiated solutions.
 
-To get an idea of the power, usefulness and scope of CLP(Z)
+To get an idea of the power, usefulness and scope of CLP(ℤ)
 constraints, I recommend you work through the examples in the
 following order:
 
-1. [**n_factorial.pl**](n_factorial.pl): Shows how to use CLP(Z)
+1. [**n_factorial.pl**](n_factorial.pl): Shows how to use CLP(ℤ)
    constraints for **declarative integer arithmetic**, obtaining very
    general programs that can be used in all directions. Declarative
-   integer arithmetic is the simplest and most common use of CLP(Z)
+   integer arithmetic is the simplest and most common use of CLP(ℤ)
    constraints. They are easy to understand and use this way, and
    often increase generality and logical purity of your code.
 
@@ -131,12 +131,12 @@ following order:
      `labeling/2`, so that termination and determinism can be observed
      without an expensive search for concrete solutions.
 
-   * You can use this example to illustrate that the CLP(Z) system is able
+   * You can use this example to illustrate that the CLP(ℤ) system is able
      to **propagate** many things that can also be found with human
      reasoning. For example, due to the nature of the above calculation and
      the prohibition of leading zeroes, `M` is necessarily 1.
 
-3. [**sudoku.pl**](sudoku.pl): Uses CLP(Z) constraints to model and
+3. [**sudoku.pl**](sudoku.pl): Uses CLP(ℤ) constraints to model and
    solve a simple and well-known puzzle. This example is well suited
    for understanding the impact of different **propagation
    strengths**: Use it to compare `all_different/1` `all_distinct/1`
@@ -151,7 +151,7 @@ following order:
 
    **Video**: https://www.metalevel.at/prolog/videos/sudoku
 
-4. [**magic_square.pl**](magic_square.pl): CLP(Z) formulation of [*magic
+4. [**magic_square.pl**](magic_square.pl): CLP(ℤ) formulation of [*magic
    squares*](http://mathworld.wolfram.com/MagicSquare.html). This is a good
    example to learn about **symmetry breaking** constraints: Consider how
    you can eliminate solutions that are rotations, reflections etc. of
@@ -166,7 +166,7 @@ following order:
    belong to the same equivalence class? How many solutions are there
    for N=4 that are unique up to isomorphism?
 
-5. [**magic_hexagon.pl**](magic_hexagon.pl): Uses CLP(Z) to describe a
+5. [**magic_hexagon.pl**](magic_hexagon.pl): Uses CLP(ℤ) to describe a
    [*magic hexagon*](http://mathworld.wolfram.com/MagicHexagon.html) of
    order 3. The task is to place the integers 1,...,19 in the following
    grid so that the sum of all numbers in a straight line (there are lines
@@ -177,12 +177,12 @@ following order:
 
    This is an example of a task that looks very simple at first, yet
    is almost impossibly hard to solve manually. It is easy to solve
-   with CLP(Z) constraints though. Use the constraint solver to show
+   with CLP(ℤ) constraints though. Use the constraint solver to show
    that the solution of this task is unique up to isomorphism.
 
 6. [**n_queens.pl**](n_queens.pl): Model the so-called [*N-queens
    puzzle*](https://en.wikipedia.org/wiki/Eight_queens_puzzle) with
-   CLP(Z) constraints. This example is a good candidate to experiment
+   CLP(ℤ) constraints. This example is a good candidate to experiment
    with different **search strategies**, specified as options of
    `labeling/2`. For example, using the labeling strategy `ff`, you
    can easliy find solutions for 100 queens and more. Sample solutions
@@ -196,7 +196,7 @@ following order:
    **Video**: https://www.metalevel.at/prolog/videos/n_queens
 
 7. [**knight_tour.pl**](knight_tour.pl): Closed Knight's Tour using
-   CLP(Z) constraints. This is an example of using a more complex
+   CLP(ℤ) constraints. This is an example of using a more complex
    **global constraint** called `circuit/1`. It shows how a problem
    can be transformed so that it can be expressed with a global
    constraint. Sample solutions, using an 8x8 and a 16x16 board:
@@ -214,7 +214,7 @@ following order:
 
 ## Animations
 
-When studying Prolog and CLP(Z) constraints, it is often very useful
+When studying Prolog and CLP(ℤ) constraints, it is often very useful
 to show *animations* of search processes. An instructional example:
 
 [**N-queens animation**](https://www.metalevel.at/queens/): This
@@ -226,11 +226,11 @@ other examples.
 
 ## An impure alternative: Low-level integer arithmetic
 
-Suppose for a moment that CLP(Z) constraints were not available in
+Suppose for a moment that CLP(ℤ) constraints were not available in
 your Prolog system, or that you do not want to use them. How do we
 formulate `n_factorial/2` with more primitive integer arithmetic?
 
-In our first attempt, we simply replace the declarative CLP(Z)
+In our first attempt, we simply replace the declarative CLP(ℤ)
 constraints by lower-level arithmetic predicates and obtain:
 
     n_factorial(0, 1).
@@ -302,7 +302,7 @@ Zero and one are the only important integers in any case, if you are
 mostly interested in programming at a very low level.
 
 For more usable and general programs, I therefore recommend you stick
-to CLP(Z) constraints for integer arithmetic. You can place pure
+to CLP(ℤ) constraints for integer arithmetic. You can place pure
 goals in any order without changing the declarative meaning of your
 program, just as you would expect from logical conjunction. For
 example:
@@ -316,15 +316,15 @@ example:
 
 Reordering pure goals can change **termination properties**, but it
 cannot incorrectly lead to failure where there is in fact a solution.
-Therefore, we get with the above CLP(Z) version for example:
+Therefore, we get with the above CLP(ℤ) version for example:
 
     ?- n_factorial(N, 3).
     <loops>
 
 And now we can reason completely declaratively about the code: Knowing
-that (a)&nbsp;CLP(Z) constraints are *pure* and can thus be reordered
-quite liberally and (b)&nbsp;that posting CLP(Z) constraints *always
-terminates*, we *know* that placing CLP(Z) constraints earlier can at
+that (a)&nbsp;CLP(ℤ) constraints are *pure* and can thus be reordered
+quite liberally and (b)&nbsp;that posting CLP(ℤ) constraints *always
+terminates*, we *know* that placing CLP(ℤ) constraints earlier can at
 most *improve*, never *worsen* the desirable termination properties.
 
 Therefore, we change the definition to the version shown initially:
@@ -341,7 +341,7 @@ The sample query now terminates:
     ?- n_factorial(N, 3).
     false.
 
-Using CLP(Z) constraints has allowed us to improve the termination
+Using CLP(ℤ) constraints has allowed us to improve the termination
 properties of this predicate by purely declarative reasoning.
 
 ## Acknowledgments
