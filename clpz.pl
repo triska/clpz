@@ -269,7 +269,7 @@ goal_expansion(del_attr(Var, Module), _, clpz, (var(Var) -> put_atts(Var, [-Acce
 :- op(700, xfx, in).
 :- op(700, xfx, ins).
 :- op(450, xfx, ..). % should bind more tightly than \/
-
+:- op(150, fx, #).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Privately needed operators.
