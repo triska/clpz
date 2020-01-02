@@ -35,8 +35,7 @@ CLP(ℤ) is an instance of the general CLP(*X*) scheme, extending logic
 programming with reasoning over specialised domains.
 
 In the case of CLP(ℤ), the domain is the set of **integers**. CLP(ℤ)
-is a generalisation of CLP(FD), which already ships with
-SICStus&nbsp;Prolog.
+is a generalisation of CLP(FD) as provided by SICStus&nbsp;Prolog.
 
 CLP(ℤ) constraints like `(#=)/2`, `(#\=)/2`, and `(#<)/2` are meant
 to be used as pure alternatives for lower-level arithmetic primitives
