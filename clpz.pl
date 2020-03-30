@@ -1899,7 +1899,7 @@ label([], _, Selection, Order, Choice, Optim0, Consistency, Vars) :-
         ;   reverse(Optim0, Optim),
             exprs_singlevars(Optim, SVs),
             call_cleanup(optimise(Vars, [S,O,C], SVs),
-                         retractall(clpfd:extremum(_)))
+                         retractall(extremum(_)))
         ).
 
 % Introduce new variables for each min/max expression to avoid
@@ -2147,11 +2147,11 @@ fds_sespsize([V|Vs], S0, S) :-
 
 optimise(Vars, Options, Whats) :-
         Whats = [What|WhatsRest],
-        asserta(clpfd:extremum(mark)),
+        asserta(extremum(mark)),
         (   catch(store_extremum(Vars, Options, What),
                   time_limit_exceeded,
                   false)
-        ;   once(clpfd:extremum(Val0)),
+        ;   once(extremum(Val0)),
             retract_until_mark,
             Val0 = n(Val),
             arg(1, What, Expr),
@@ -2164,7 +2164,7 @@ optimise(Vars, Options, Whats) :-
         ).
 
 retract_until_mark :-
-        (   retract(clpfd:extremum(E)), E == mark -> true
+        (   retract(extremum(E)), E == mark -> true
         ;   retract_until_mark
         ).
 
@@ -2184,12 +2184,12 @@ optimise(Direction, Options, Vars, Expr0, Expr) :-
 
 
 update_extremum(Expr) :-
-        (   once(clpfd:extremum(Prev)),
+        (   once(extremum(Prev)),
             Prev = n(_) ->
-            once(retract(clpfd:extremum(_)))
+            once(retract(extremum(_)))
         ;   true
         ),
-        asserta(clpfd:extremum(n(Expr))).
+        asserta(extremum(n(Expr))).
 
 tighten(min, E, V) :- E #< V.
 tighten(max, E, V) :- E #> V.
