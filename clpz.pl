@@ -3,7 +3,7 @@
     Author:        Markus Triska
     E-mail:        triska@metalevel.at
     WWW:           https://www.metalevel.at
-    Copyright (C): 2016, 2017, 2019 Markus Triska
+    Copyright (C): 2016-2020 Markus Triska
 
     This library provides CLP(Z):
 
@@ -133,7 +133,7 @@
         queue/2,
         enabled/1.
 
-:- dynamic clpz_monotonic/0.
+:- dynamic monotonic/0.
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Compatibility predicates.
@@ -911,13 +911,13 @@ X = 1+1.
 This behaviour is highly problematic from a logical point of view, and
 it may render declarative debugging techniques inapplicable.
 
-Assert `clpz:clpz_monotonic` to make CLP(Z) **monotonic**: This means
+Assert `clpz:monotonic` to make CLP(Z) **monotonic**: This means
 that _adding_ new constraints _cannot_ yield new solutions. When this
 flag is `true`, we must wrap variables that occur in arithmetic
 expressions with the functor `(?)/1` or `(#)/1`. For example:
 
 ==
-?- assertz(clpz:clpz_monotonic).
+?- assertz(clpz:monotonic).
 true.
 
 ?- #(X) #= #(Y) + #(Z).
@@ -2577,7 +2577,7 @@ parse_clpz(E, R,
             ]).
 
 non_monotonic(X) :-
-        (   \+ fd_var(X), clpz_monotonic ->
+        (   \+ fd_var(X), monotonic ->
             instantiation_error(X)
         ;   true
         ).
@@ -2924,7 +2924,7 @@ clpz_equal(X, Y) :- clpz_equal_(X, Y), reinforce(X).
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 expr_conds(E, E)                 --> [integer(E)],
-        { var(E), !, \+ clpz_monotonic }.
+        { var(E), !, \+ monotonic }.
 expr_conds(E, E)                 --> { integer(E) }.
 expr_conds(?(E), E)              --> [integer(E)].
 expr_conds(#(E), E)              --> [integer(E)].
@@ -7045,7 +7045,7 @@ initial_expr(_, []-1).
 automaton(Seqs, Template, Sigs, Ns, As0, Cs, Is, Fs) :-
         must_be(list(list), [Sigs,Ns,As0,Cs,Is]),
         (   var(Seqs) ->
-            (   clpz_monotonic ->
+            (   monotonic ->
                 instantiation_error(Seqs)
             ;   Seqs = Sigs
             )
@@ -7433,7 +7433,7 @@ attributes_goals([propagator(P, State)|As]) -->
         (   { ground(State) } -> []
         ;   { phrase(attribute_goal_(P), Gs) } ->
             { % del_attr(State, clpz_aux), State = processed,
-              (   clpz_monotonic ->
+              (   monotonic ->
                   maplist(unwrap_with(bare_integer), Gs, Gs1)
               ;   maplist(unwrap_with(=), Gs, Gs1)
               ),
