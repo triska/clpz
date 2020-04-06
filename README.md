@@ -4,8 +4,8 @@ This repository contains information about **CLP(ℤ)**.
 
 CLP(ℤ) requires **SICStus Prolog**.
 
-The latest version of `library(clpz)` is available from:
-[**metalevel.at/clpz.pl**](http://www.metalevel.at/clpz.pl)
+As of April 2020, a version of this library ships with
+Scryer&nbsp;Prolog as <tt>library(clpz)</tt>.
 
 The present implementation builds upon a decade of experience with a
 precursor library which I developed for a different Prolog system.
