@@ -133,7 +133,7 @@
         queue/2,
         enabled/1.
 
-:- dynamic monotonic/0.
+:- dynamic(monotonic/0).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Compatibility predicates.
@@ -2143,7 +2143,7 @@ fds_sespsize([V|Vs], S0, S) :-
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-:- dynamic extremum/1.
+:- dynamic(extremum/1).
 
 optimise(Vars, Options, Whats) :-
         Whats = [What|WhatsRest],
@@ -3060,7 +3060,7 @@ is_false((A,B))      :- is_false(A) ; is_false(B).
 :- endif.
 is_false(var(X)) :- nonvar(X).
 
-:- dynamic goal_expansion/1.
+:- dynamic(goal_expansion/1).
 
 goal_expansion(Goal0, _Layout1, _Module, Goal, []) :-
         \+ goal_expansion(false),
