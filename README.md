@@ -37,9 +37,10 @@ programming with reasoning over specialised domains.
 In the case of CLP(ℤ), the domain is the set of **integers**. CLP(ℤ)
 is a generalisation of CLP(FD) as provided by SICStus&nbsp;Prolog.
 
-CLP(ℤ) constraints like `(#=)/2`, `(#\=)/2`, and `(#<)/2` are meant
-to be used as pure alternatives for lower-level arithmetic primitives
-over integers. Importantly, they can be used in *all directions*.
+CLP(ℤ) constraints like `(#=)/2`, `(#\=)/2`, and `(#<)/2` are meant to
+be used as more general alternatives for lower-level arithmetic
+primitives over integers. Importantly, they can be used in *all
+directions*.
 
 For example, consider a rather typical definition of `n_factorial/2`:
 
@@ -225,7 +226,7 @@ You can use similar PostScript instructions to create [custom
 animations](https://www.metalevel.at/postscript/animations) for
 other examples.
 
-## An impure alternative: Low-level integer arithmetic
+## A limited alternative: Low-level integer arithmetic
 
 Suppose for a moment that CLP(ℤ) constraints were not available in
 your Prolog system, or that you do not want to use them. How do we
@@ -277,7 +278,7 @@ But what about *more general* queries? For example:
 
 Unfortunately, this version thus cannot be directly used to enumerate
 more than one solution, which is another severe drawback in comparison
-with the pure version.
+with the more general version.
 
 You can make the deficiency a lot worse by arbitrarily adding
 a&nbsp;`!/0` somewhere. Using `!/0` is a quite reliable way to destroy
