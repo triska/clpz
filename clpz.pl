@@ -3053,11 +3053,10 @@ expansion_simpler(Goal, Goal).
 
 is_true(true).
 is_true(integer(I))  :- integer(I).
-:- if(current_predicate(var_property/2)).
-is_true(var(X))      :- var(X), var_property(X, fresh(true)).
-is_false(integer(X)) :- var(X), var_property(X, fresh(true)).
+% var_property/2 would be useful to detect fresh variables
+% is_true(var(X))      :- var(X), var_property(X, fresh(true)).
+% is_false(integer(X)) :- var(X), var_property(X, fresh(true)).
 is_false((A,B))      :- is_false(A) ; is_false(B).
-:- endif.
 is_false(var(X)) :- nonvar(X).
 
 :- dynamic(goal_expansion/1).
