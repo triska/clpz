@@ -3,7 +3,7 @@
     Author:        Markus Triska
     E-mail:        triska@metalevel.at
     WWW:           https://www.metalevel.at
-    Copyright (C): 2016-2020 Markus Triska
+    Copyright (C): 2016-2022 Markus Triska
 
     This library provides CLP(Z):
 
@@ -321,7 +321,7 @@ possible.
 Almost all Prolog programs also reason about integers. Therefore, it
 is highly advisable that you make CLP(Z) constraints available in all
 your programs. One way to do this is to put the following directive in
-your =|~/.swiplrc|= initialisation file:
+your =|~/.scryerrc|= initialisation file:
 
 ==
 :- use_module(library(clpz)).
@@ -411,7 +411,7 @@ The [_arithmetic constraints_](<#clpz-arith-constraints>) #=/2, #>/2
 etc. are meant to be used _instead_ of the primitives `(is)/2`,
 `(=:=)/2`, `(>)/2` etc. over integers. Almost all Prolog programs also
 reason about integers. Therefore, it is recommended that you put the
-following directive in your =|~/.swiplrc|= initialisation file to make
+following directive in your =|~/.scryerrc|= initialisation file to make
 CLP(Z) constraints available in all your programs:
 
 ==
@@ -425,7 +425,7 @@ arithmetic expressions involving integers. For example:
 
 ==
 ?- X #= 1+2.
-X = 3.
+   X = 3.
 ==
 
 This could in principle also be achieved with the lower-level
@@ -436,7 +436,7 @@ partially instantiated. For example:
 
 ==
 ?- 3 #= Y+2.
-Y = 1.
+   Y = 1.
 ==
 
 This relational nature makes CLP(Z) constraints easy to explain and
@@ -445,10 +445,10 @@ alike. In contrast, when using low-level integer arithmetic, we get:
 
 ==
 ?- 3 is Y+2.
-ERROR: is/2: Arguments are not sufficiently instantiated
+   error(instantiation_error,(is)/2).
 
 ?- 3 =:= Y+2.
-ERROR: =:=/2: Arguments are not sufficiently instantiated
+   error(instantiation_error,(is)/2).
 ==
 
 Due to the necessary operational considerations, the use of these
@@ -518,8 +518,8 @@ roughly the same performance. For example:
 
 ==
 ?- n_factorial(47, F).
-F = 258623241511168180642964355153611979969197632389120000000000 ;
-false.
+   F = 258623241511168180642964355153611979969197632389120000000000
+;  false.
 ==
 
 Now the point: Due to the increased flexibility and generality of
@@ -539,12 +539,12 @@ improved. For example, the following queries now both terminate:
 
 ==
 ?- n_factorial(N, 1).
-N = 0 ;
-N = 1 ;
-false.
+   N = 0
+;  N = 1
+;  false.
 
 ?- n_factorial(N, 3).
-false.
+   false.
 ==
 
 To make the predicate terminate if _any_ argument is instantiated, add
@@ -630,17 +630,17 @@ problem(1, [[_,_,_,_,_,_,_,_,_],
 Sample query:
 
 ==
-?- problem(1, Rows), sudoku(Rows), maplist(writeln, Rows).
-[9,8,7,6,5,4,3,2,1]
-[2,4,6,1,7,3,9,8,5]
-[3,5,1,9,2,8,7,4,6]
-[1,2,8,5,3,7,6,9,4]
-[6,3,4,8,9,2,1,5,7]
-[7,9,5,4,6,1,8,3,2]
-[5,1,9,2,8,6,4,7,3]
-[4,7,2,3,1,9,5,6,8]
-[8,6,3,7,4,5,2,1,9]
-Rows = [[9, 8, 7, 6, 5, 4, 3, 2|...], ... , [...|...]].
+?- problem(1, Rows), sudoku(Rows), maplist(portray_clause, Rows).
+[9,8,7,6,5,4,3,2,1].
+[2,4,6,1,7,3,9,8,5].
+[3,5,1,9,2,8,7,4,6].
+[1,2,8,5,3,7,6,9,4].
+[6,3,4,8,9,2,1,5,7].
+[7,9,5,4,6,1,8,3,2].
+[5,1,9,2,8,6,4,7,3].
+[4,7,2,3,1,9,5,6,8].
+[8,6,3,7,4,5,2,1,9].
+   Rows = [[9,8,7,6,5,4,3,2,1]|...].
 ==
 
 In this concrete case, the constraint solver is strong enough to find
@@ -653,25 +653,23 @@ Here is an example session with a few queries and their answers:
 
 ==
 ?- X #> 3.
-X in 4..sup.
+   clpz:(X in 4..sup).
 
 ?- X #\= 20.
-X in inf..19\/21..sup.
+   clpz:(X in inf..19\/21..sup).
 
 ?- 2*X #= 10.
-X = 5.
+   X = 5.
 
 ?- X*X #= 144.
-X in -12\/12.
+   clpz:(X in-12\/12)
+;  false.
 
 ?- 4*X + 2*Y #= 24, X + Y #= 9, [X,Y] ins 0..sup.
-X = 3,
-Y = 6.
+   X = 3, Y = 6.
 
 ?- X #= Y #<==> B, X in 0..3, Y in 4..5.
-B = 0,
-X in 0..3,
-Y in 4..5.
+   B = 0, clpz:(X in 0..3), clpz:(Y in 4..5).
 ==
 
 The answers emitted by the toplevel are called _residual programs_,
@@ -689,9 +687,7 @@ further reasoning within your program, use copy_term/3. For example:
 
 ==
 ?- X #= Y + Z, X in 0..5, copy_term([X,Y,Z], [X,Y,Z], Gs).
-Gs = [clpz: (X in 0..5), clpz: (Y+Z#=X)],
-X in 0..5,
-Y+Z#=X.
+   Gs = [clpz:(Y+Z#=X),clpz:(X in 0..5)].
 ==
 
 This library also provides _reflection_ predicates (like fd_dom/2,
@@ -738,16 +734,16 @@ readability):
 
 ==
 ?- puzzle(As+Bs=Cs).
-As = [9, A2, A3, A4],
-Bs = [1, 0, B3, A2],
-Cs = [1, 0, A3, A2, C5],
-A2 in 4..7,
-all_different([9, A2, A3, A4, 1, 0, B3, C5]),
-91*A2+A4+10*B3#=90*A3+C5,
-A3 in 5..8,
-A4 in 2..8,
-B3 in 2..8,
-C5 in 2..8.
+   As = [9,_A,_B,_C],
+   Bs = [1,0,_D,_A],
+   Cs = [1,0,_B,_A,_E],
+   clpz:all_different([9,_A,_B,_C,1,0,_D,_E]),
+   clpz:(91*_A+_C+10*_D#=90*_B+_E),
+   clpz:(_A in 4..7),
+   clpz:(_B in 5..8),
+   clpz:(_C in 2..8),
+   clpz:(_D in 2..8),
+   clpz:(_E in 2..8).
 ==
 
 From this answer, we see that this core relation _terminates_ and is in
@@ -761,10 +757,8 @@ predicate or goal:
 
 ==
 ?- puzzle(As+Bs=Cs), label(As).
-As = [9, 5, 6, 7],
-Bs = [1, 0, 8, 5],
-Cs = [1, 0, 6, 5, 2] ;
-false.
+   As = [9,5,6,7], Bs = [1,0,8,5], Cs = [1,0,6,5,2]
+;  false.
 ==
 
 In this case, it suffices to label a subset of variables to find the
@@ -829,7 +823,8 @@ The original task can be readily solved with the following query:
 
 ==
 ?- n_queens(8, Qs), label(Qs).
-Qs = [1, 5, 8, 6, 3, 7, 2, 4] .
+   Qs = [1,5,8,6,3,7,2,4]
+;  ... .
 ==
 
 Using suitable labeling strategies, we can easily find solutions with
@@ -837,11 +832,13 @@ Using suitable labeling strategies, we can easily find solutions with
 
 ==
 ?- n_queens(80, Qs), labeling([ff], Qs).
-Qs = [1, 3, 5, 44, 42, 4, 50, 7, 68|...] .
+   Qs = [1,3,5,44,42,4,50,7,68,57,76,61,6,39,30,40,8,54,36,41,...]
+;  ... .
 
 ?- time((n_queens(90, Qs), labeling([ff], Qs))).
-% 5,904,401 inferences, 0.722 CPU in 0.737 seconds (98% CPU)
-Qs = [1, 3, 5, 50, 42, 4, 49, 7, 59|...] .
+   % CPU time: 81.716s
+   Qs = [1,3,5,50,42,4,49,7,59,48,46,63,6,55,47,64,8,70,58,67,...]
+;  ... .
 ==
 
 Experimenting with different search strategies is easy because we have
@@ -918,13 +915,13 @@ expressions with the functor `(?)/1` or `(#)/1`. For example:
 
 ==
 ?- assertz(clpz:monotonic).
-true.
+   true.
 
-?- #(X) #= #(Y) + #(Z).
-#(Y)+ #(Z)#= #(X).
+?- #X + #Y #= #Z.
+   clpz:(#X+ #Y#= #Z).
 
-?-          X #= 2, X = 1+1.
-ERROR: Arguments are not sufficiently instantiated
+?- X #= 2, X = 1+1.
+   error(instantiation_error,instantiation_error(unknown(_3965),1)).
 ==
 
 The wrapper can be omitted for variables that are already constrained
@@ -2133,14 +2130,7 @@ fds_sespsize([V|Vs], S0, S) :-
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Optimisation uses destructive assignment to save the computed
    extremum over backtracking. Failure is used to get rid of copies of
-   attributed variables that are created in intermediate steps. At
-   least that's the intention - it currently doesn't work in SWI:
-
-   %?- X in 0..3, call_residue_vars(labeling([min(X)], [X]), Vs).
-   %@ X = 0,
-   %@ Vs = [_G6174, _G6177],
-   %@ _G6174 in 0..3
-
+   attributed variables that are created in intermediate steps.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 :- dynamic(extremum/1).
