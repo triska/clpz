@@ -2537,7 +2537,7 @@ parse_clpz(E, R,
                                    g(constrain_to_integer(E)), g(E = R)],
              g(integer(E))     => [g(R = E)],
              ?(E)              => [g(must_be_fd_integer(E)), g(R = E)],
-             #(E)              => [g(must_be_fd_integer(E)), g(R = E)],
+             #E                => [g(must_be_fd_integer(E)), g(R = E)],
              m(A+B)            => [p(pplus(A, B, R))],
              % power_var_num/3 must occur before */2 to be useful
              g(power_var_num(E, V, N)) => [p(pexp(V, N, R))],
@@ -2594,7 +2594,7 @@ parse_matcher(E, R, Matcher, Clause) :-
 
 parse_condition(g(Goal), E, E)       --> [Goal, !].
 parse_condition(?(E), _, ?(E))       --> [!].
-parse_condition(#(E), _, #(E))       --> [!].
+parse_condition(#E, _, #E)           --> [!].
 parse_condition(m(Match), _, Match0) -->
         [!],
         { copy_term(Match, Match0),
@@ -2917,7 +2917,7 @@ expr_conds(E, E)                 --> [integer(E)],
         { var(E), !, \+ monotonic }.
 expr_conds(E, E)                 --> { integer(E) }.
 expr_conds(?(E), E)              --> [integer(E)].
-expr_conds(#(E), E)              --> [integer(E)].
+expr_conds(#E, E)                --> [integer(E)].
 expr_conds(-E0, -E)              --> expr_conds(E0, E).
 expr_conds(abs(E0), abs(E))      --> expr_conds(E0, E).
 expr_conds(A0+B0, A+B)           --> expr_conds(A0, A), expr_conds(B0, B).
@@ -3061,7 +3061,7 @@ goal_expansion(Goal0, _Layout1, _Module, Goal, []) :-
 linsum(X, S, S)    --> { var(X), !, non_monotonic(X) }, [vn(X,1)].
 linsum(I, S0, S)   --> { integer(I), S is S0 + I }.
 linsum(?(X), S, S) --> { must_be_fd_integer(X) }, [vn(X,1)].
-linsum(#(X), S, S) --> { must_be_fd_integer(X) }, [vn(X,1)].
+linsum(#X, S, S)   --> { must_be_fd_integer(X) }, [vn(X,1)].
 linsum(-A, S0, S)  --> mulsum(A, -1, S0, S).
 linsum(N*A, S0, S) --> { integer(N) }, !, mulsum(A, N, S0, S).
 linsum(A*N, S0, S) --> { integer(N) }, !, mulsum(A, N, S0, S).
@@ -3456,7 +3456,7 @@ parse_reified(E, R, D,
                                  g(constrain_to_integer(E)), g(R = E), g(D=1)],
                g(integer(E)) => [g(R=E), g(D=1)],
                ?(E)          => [g(must_be_fd_integer(E)), g(R=E), g(D=1)],
-               #(E)          => [g(must_be_fd_integer(E)), g(R=E), g(D=1)],
+               #E            => [g(must_be_fd_integer(E)), g(R=E), g(D=1)],
                m(A+B)        => [d(D), p(pplus(A,B,R)), a(A,B,R)],
                m(A*B)        => [d(D), p(ptimes(A,B,R)), a(A,B,R)],
                m(A-B)        => [d(D), p(pplus(R,B,A)), a(A,B,R)],
@@ -3509,7 +3509,7 @@ parse_reified(E, R, D, Matcher, Clause) :-
 
 reified_condition(g(Goal), E, E, []) --> [{Goal}, !].
 reified_condition(?(E), _, ?(E), []) --> [!].
-reified_condition(#(E), _, #(E), []) --> [!].
+reified_condition(#E, _, #E, [])     --> [!].
 reified_condition(m(Match), _, Match0, Ds) -->
         [!],
         { copy_term(Match, Match0),
@@ -3573,7 +3573,7 @@ reify(Expr, B, Ps) :-
 reifiable(E)      :- var(E), non_monotonic(E).
 reifiable(E)      :- integer(E), E in 0..1.
 reifiable(?(E))   :- must_be_fd_integer(E).
-reifiable(#(E))   :- must_be_fd_integer(E).
+reifiable(#E)     :- must_be_fd_integer(E).
 reifiable(V in _) :- fd_variable(V).
 reifiable(Expr)   :-
         Expr =.. [Op,Left,Right],
@@ -3594,7 +3594,7 @@ reify(E, B) --> { B in 0..1 }, reify_(E, B).
 reify_(E, B) --> { var(E), !, E = B }.
 reify_(E, B) --> { integer(E), E = B }.
 reify_(?(B), B) --> [].
-reify_(#(B), B) --> [].
+reify_(#B, B) --> [].
 reify_(V in Drep, B) -->
         { drep_to_domain(Drep, Dom) },
         propagator_init_trigger(reified_in(V,Dom,B)),
@@ -7441,7 +7441,7 @@ unwrap_with(Goal, Term0, Term) :-
         maplist(unwrap_with(Goal), Args0, Args),
         Term =.. [F|Args].
 
-bare_integer(V0, V)    :- ( integer(V0) -> V = V0 ; V = #(V0) ).
+bare_integer(V0, V)    :- ( integer(V0) -> V = V0 ; V = #V0 ).
 
 attribute_goal_(presidual(Goal))       --> [Goal].
 attribute_goal_(pgeq(A,B))             --> [#A #>= #B].
