@@ -239,13 +239,13 @@ map_list_to_pairs2([H|T0], Pred, [K-H|T]) :-
 :- discontiguous clpz:goal_expansion/5.
 
 
-goal_expansion(get_attr(Var, Module, Value), _, clpz, (var(Var),get_atts(Var, [+Access])), []) :-
+goal_expansion(get_attr(Var, Module, Value), _, clpz, (var(Var),get_atts(Var, +Access)), []) :-
         Access =.. [Module,Value].
 
-goal_expansion(put_attr(Var, Module, Value), _, clpz, put_atts(Var, [+Access]), []) :-
+goal_expansion(put_attr(Var, Module, Value), _, clpz, put_atts(Var, +Access), []) :-
         Access =.. [Module,Value].
 
-goal_expansion(del_attr(Var, Module), _, clpz, (var(Var) -> put_atts(Var, [-Access]);true), []) :-
+goal_expansion(del_attr(Var, Module), _, clpz, (var(Var) -> put_atts(Var, -Access);true), []) :-
         Access =.. [Module,_].
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2655,10 +2655,10 @@ variables_same_queue(Vs0) :-
         maplist(=(Q), Qs).
 
 clear_queue(queue(Goals,Fast,Slow,Aux)) :-
-        put_atts(Goals, [-queue(_,_)]),
-        put_atts(Fast, [-queue(_,_)]),
-        put_atts(Slow, [-queue(_,_)]),
-        put_atts(Aux, [-enabled(_)]).
+        put_atts(Goals, -queue(_,_)),
+        put_atts(Fast, -queue(_,_)),
+        put_atts(Slow, -queue(_,_)),
+        put_atts(Aux, -enabled(_)).
 
 collect_goal(Qs) --> collect_arg(Qs, 1).
 collect_fast(Qs) --> collect_arg(Qs, 2).
@@ -3870,9 +3870,9 @@ put_terminating(X, Dom, Ps) -->
         ).
 
 new_queue(queue(Goals,Fast,Slow,_Aux)) :-
-        put_atts(Goals, [+queue([],_)]),
-        put_atts(Fast, [+queue([],_)]),
-        put_atts(Slow, [+queue([],_)]).
+        put_atts(Goals, +queue([],_)),
+        put_atts(Fast, +queue([],_)),
+        put_atts(Slow, +queue([],_)).
 
 queue_goal(Goal) --> insert_queue(Goal, 1).
 queue_fast(Prop) --> insert_queue(Prop, 2).
@@ -3881,13 +3881,13 @@ queue_slow(Prop) --> insert_queue(Prop, 3).
 insert_queue(Element, Which) -->
         state(Queue),
         { arg(Which, Queue, Arg),
-          get_atts(Arg, [+queue(Head0,Tail0)]),
+          get_atts(Arg, +queue(Head0,Tail0)),
           (   Head0 == [] ->
               Head = [Element|Tail]
           ;   Head = Head0,
               Tail0 = [Element|Tail]
           ),
-          put_atts(Arg, [+queue(Head,Tail)]) }.
+          put_atts(Arg, +queue(Head,Tail)) }.
         
 
 domain_spread(Dom, Spread) :-
@@ -4113,9 +4113,9 @@ do_queue -->
 
 print_queue -->
         state(queue(Goal,Fast,Slow,_)),
-        { get_atts(Goal, [+queue(GHs,_)]),
-          get_atts(Fast, [+queue(FHs,_)]),
-          get_atts(Slow, [+queue(SHs,_)]),
+        { get_atts(Goal, +queue(GHs,_)),
+          get_atts(Fast, +queue(FHs,_)),
+          get_atts(Slow, +queue(SHs,_)),
           format("Current queue:~n   goal: ~q~n   fast: ~q~n   slow: ~q~n~n", [GHs,FHs,SHs]) }.
 
         
@@ -4130,13 +4130,13 @@ queue_get_arg(Which, Element) -->
 
 queue_get_arg_(Queue, Which, Element) :-
         arg(Which, Queue, Arg),
-        get_atts(Arg, [+queue([Element|Elements],Tail)]),
+        get_atts(Arg, +queue([Element|Elements],Tail)),
         (   var(Elements) ->
-            put_atts(Arg, [+queue([],_)])
-        ;   put_atts(Arg, [+queue(Elements,Tail)])
+            put_atts(Arg, +queue([],_))
+        ;   put_atts(Arg, +queue(Elements,Tail))
         ).
 
-queue_enabled --> state(queue(_,_,_,Aux)), { \+ get_atts(Aux, [+enabled(false)]) }.
+queue_enabled --> state(queue(_,_,_,Aux)), { \+ get_atts(Aux, +enabled(false)) }.
             
 
 portray_propagator(propagator(P,_), F) :- functor(P, F, _).
