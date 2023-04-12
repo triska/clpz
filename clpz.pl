@@ -4266,13 +4266,13 @@ tuples_in(Tuples, Relation) :-
         must_be(list(list), Tuples),
         maplist(maplist(fd_variable), Tuples),
         must_be(list(list(integer)), Relation),
-        maplist(relation_tuple(Relation), Tuples),
-        do_queue.
+        maplist(relation_tuple(Relation), Tuples).
 
 relation_tuple(Relation, Tuple) :-
         relation_unifiable(Relation, Tuple, Us, _, _),
         (   ground(Tuple) -> memberchk(Tuple, Relation)
-        ;   tuple_domain(Tuple, Us),
+        ;   new_queue(Q),
+            phrase((tuple_domain(Tuple, Us),do_queue), [Q], _),
             (   Tuple = [_,_|_] -> tuple_freeze(Tuple, Us)
             ;   true
             )
