@@ -4278,6 +4278,8 @@ relation_tuple(Relation, Tuple) :-
             )
         ).
 
+list_first_rest([L|Ls], L, Ls).
+
 tuple_domain([], _) --> [].
 tuple_domain([T|Ts], Relation0) -->
         { maplist(list_first_rest, Relation0, Firsts, Relation1) },
