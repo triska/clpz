@@ -4295,9 +4295,11 @@ tuple_domain([T|Ts], Relation0) -->
         tuple_domain(Ts, Relation1).
 
 tuple_freeze(Tuple, Relation) :-
-        put_attr(R, clpz_relation, Relation),
-        make_propagator(rel_tuple(R, Tuple), Prop),
-        tuple_freeze_(Tuple, Prop).
+        (   ground(Tuple) -> memberchk(Tuple, Relation)
+        ;   put_attr(R, clpz_relation, Relation),
+            make_propagator(rel_tuple(R, Tuple), Prop),
+            tuple_freeze_(Tuple, Prop)
+        ).
 
 tuple_freeze_([], _).
 tuple_freeze_([T|Ts], Prop) :-
