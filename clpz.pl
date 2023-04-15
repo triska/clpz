@@ -3987,7 +3987,7 @@ trigger_props(fd_props(Gs,Bs,Os)) -->
 trigger_props_([]) --> [].
 trigger_props_([P|Ps]) --> trigger_prop(P), trigger_props_(Ps).
 
-trigger_prop(_P) :- true. % TODO: What to do?
+trigger_prop(P) :- trigger_once(P).
 
 trigger_prop(Propagator) -->
         { propagator_state(Propagator, State) },
