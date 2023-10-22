@@ -941,16 +941,26 @@ one of X and Y is instantiated:
 :- multifile clpz:run_propagator/2.
 
 oneground(X, Y, Z) :-
-        clpz:make_propagator(oneground(X, Y, Z), Prop),
-        clpz:init_propagator(X, Prop),
-        clpz:init_propagator(Y, Prop),
-        clpz:trigger_once(Prop).
+    clpz:make_propagator(oneground(X,Y,Z), Prop),
+    clpz:init_propagator(X, Prop),
+    clpz:init_propagator(Y, Prop),
+    clpz:trigger_once(Prop).
 
-clpz:run_propagator(oneground(X, Y, Z), MState) :-
-        (   integer(X) -> clpz:kill(MState), Z = 1
-        ;   integer(Y) -> clpz:kill(MState), Z = 1
-        ;   true
-        ).
+clpz:run_propagator(oneground(X,Y,Z), MState) -->
+    {
+        (
+            integer(X)
+        ->
+            clpz:kill(MState),
+            Z = 1
+        ;   (
+                integer(Y)
+            ->
+                clpz:kill(MState),
+                Z = 1
+            ;   true
+            )
+        )}.
 ==
 
 First, clpz:make_propagator/2 is used to transform a user-defined
