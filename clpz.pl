@@ -938,7 +938,7 @@ custom constraint `oneground(X,Y,Z)`, where Z shall be 1 if at least
 one of X and Y is instantiated:
 
 ==
-:- multifile clpz:run_propagator/2.
+:- multifile clpz:run_propagator/4.
 
 oneground(X, Y, Z) :-
     clpz:make_propagator(oneground(X,Y,Z), Prop),
@@ -960,7 +960,8 @@ clpz:run_propagator(oneground(X,Y,Z), MState) -->
                 Z = 1
             ;   true
             )
-        )}.
+        )
+    }.
 ==
 
 First, clpz:make_propagator/2 is used to transform a user-defined
@@ -4338,6 +4339,7 @@ all_in_domain([A|As], [T|Ts]) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- multifile clpz:run_propagator/4.
 %run_propagator(P, _) --> { portray_clause(run_propagator(P)), false }.
 % trivial propagator, used only to remember pending constraints
 run_propagator(presidual(_), _) --> [].
