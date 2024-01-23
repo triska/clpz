@@ -938,19 +938,30 @@ custom constraint `oneground(X,Y,Z)`, where Z shall be 1 if at least
 one of X and Y is instantiated:
 
 ==
-:- multifile clpz:run_propagator/2.
+:- multifile(clpz:run_propagator/4).
 
 oneground(X, Y, Z) :-
-        clpz:make_propagator(oneground(X, Y, Z), Prop),
-        clpz:init_propagator(X, Prop),
-        clpz:init_propagator(Y, Prop),
-        clpz:trigger_once(Prop).
+    clpz:make_propagator(oneground(X,Y,Z), Prop),
+    clpz:init_propagator(X, Prop),
+    clpz:init_propagator(Y, Prop),
+    clpz:trigger_once(Prop).
 
-clpz:run_propagator(oneground(X, Y, Z), MState) :-
-        (   integer(X) -> clpz:kill(MState), Z = 1
-        ;   integer(Y) -> clpz:kill(MState), Z = 1
-        ;   true
-        ).
+clpz:run_propagator(oneground(X,Y,Z), MState) -->
+    {
+        (
+            integer(X)
+        ->
+            clpz:kill(MState),
+            Z = 1
+        ;   (
+                integer(Y)
+            ->
+                clpz:kill(MState),
+                Z = 1
+            ;   true
+            )
+        )
+    }.
 ==
 
 First, clpz:make_propagator/2 is used to transform a user-defined
@@ -959,7 +970,7 @@ clpz:init_propagator/2, this internal form is then attached to X and
 Y. From now on, the propagator will be invoked whenever the domains of
 X or Y are changed. Then, clpz:trigger_once/1 is used to give the
 propagator its first chance for propagation even though the variables'
-domains have not yet changed. Finally, clpz:run_propagator/2 is
+domains have not yet changed. Finally, clpz:run_propagator//2 is
 extended to define the actual propagator. As explained, this predicate
 is automatically called by the constraint solver. The first argument
 is the user-defined representation of the constraint as used in
@@ -4333,6 +4344,7 @@ all_in_domain([A|As], [T|Ts]) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- multifile(clpz:run_propagator/4).
 %run_propagator(P, _) --> { portray_clause(run_propagator(P)), false }.
 % trivial propagator, used only to remember pending constraints
 run_propagator(presidual(_), _) --> [].
