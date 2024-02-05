@@ -5177,6 +5177,7 @@ run_propagator(pexp(X,Y,Z), MState) -->
         ;   X == 0 -> kill(MState), queue_goal((Z in 0..1, Y #>= 0, Z #<==> Y #= 0))
         ;   Y == 0 -> kill(MState), Z = 1
         ;   Y == 1 -> kill(MState), Z = X
+        ;   Y == Z -> kill(MState), X = Y, queue_goal(X in -1\/1)
         ;   nonvar(X) ->
             (   nonvar(Y) ->
                 (   Y >= 0 -> true ; X =:= -1 ),
